@@ -1,0 +1,8 @@
+language: go
+notificaitons:
+  email:
+    recipients: rodrigo-mendonca@outlook.com.br
+    on_success: change
+    on_failure: always
+before_script:
+- go get gopkg.in/mgo.v2
