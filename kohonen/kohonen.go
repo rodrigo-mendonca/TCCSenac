@@ -1,7 +1,7 @@
 package kohonen
 
 import (
-    neu "./neuron"
+    neu "../neuron"
     "os"
     "math"
     "math/rand"
