@@ -11,5 +11,5 @@ install:
 - go get github.com/rodrigo-mendonca/TCCSenac/kohonen
 - go get github.com/rodrigo-mendonca/TCCSenac/somfunctions
 
-scripts:
+script:
 - go test github.com/rodrigo-mendonca/TCCSenac/neuron github.com/rodrigo-mendonca/TCCSenac/somfunctions github.com/rodrigo-mendonca/TCCSenac/foofinder
