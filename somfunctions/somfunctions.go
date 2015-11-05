@@ -1,4 +1,4 @@
-package somf
+package somfunctions
 
 import (
 	somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"

@@ -1,4 +1,4 @@
-package soms
+package somstructs
 
 type KDDCup struct{
     Duration int
