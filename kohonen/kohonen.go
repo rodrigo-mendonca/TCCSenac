@@ -1,7 +1,7 @@
 package kohonen
 
 import (
-    neu "../neuron"
+    neu "github.com/rodrigo-mendonca/TCCSenac/neuron"
     "os"
     "math"
     "math/rand"

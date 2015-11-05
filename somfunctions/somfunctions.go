@@ -1,7 +1,7 @@
 package somf
 
 import (
-	somk "../kohonen"
+	somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
 	"os"
     "os/exec"
     "gopkg.in/mgo.v2"

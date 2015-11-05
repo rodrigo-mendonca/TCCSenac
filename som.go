@@ -2,7 +2,7 @@ package main
 
 import (
     //"./somstructs"
-    somf "./somfunctions"
+    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
     "fmt"
     "flag"
     "testing"
