@@ -10,6 +10,6 @@ install:
 - go get github.com/rodrigo-mendonca/TCCSenac/neuron
 - go get github.com/rodrigo-mendonca/TCCSenac/kohonen
 - go get github.com/rodrigo-mendonca/TCCSenac/somfunctions
-
+- go get github.com/bmizerany/assert
 script:
 - go test github.com/rodrigo-mendonca/TCCSenac/foofinder
