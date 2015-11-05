@@ -6,7 +6,7 @@ import (
 )
 
 func TestIsItFoo(t *testing.T) {
-	word := "bar"
+	word := "foo"
 	foo, err := IsItFoo(word)
 	if err != nil {
 		t.Fatal(err)
