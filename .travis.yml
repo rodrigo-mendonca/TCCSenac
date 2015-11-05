@@ -7,4 +7,4 @@ notificaitons:
 install:
 - go get gopkg.in/mgo.v2
 - go get gopkg.in/mgo.v2/bson
-- ls -a
+- go get ../
