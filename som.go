@@ -5,51 +5,23 @@ import (
     somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
     "fmt"
     "flag"
-    "testing"
     "os"
     "bufio"
 )
-var Test bool
+
 var Loadtype int
-var Filename, Savename, ValidFilename string
+var Filename, Savename string
 var Saved, Train bool
 var PngBefore,PngAfter string
 
 func main() {
     LoadParams()
-    PngBefore = "Before.png"
-    PngAfter = "After.png"
-    ShowParams()
-
-    if Test {
-        result := testing.Benchmark(ExecuteTest)
-        
-        patterns,labels :=somf.LoadFile(ValidFilename)
-
-        seconds := float64(result.T.Seconds()) / float64(result.N)
-        fmt.Printf("%13.2f s\n\n", seconds)
-
-        for i := 0; i < len(patterns); i++ {
-            Weights,label := somf.Koh.Test(patterns[i])
-            fmt.Printf("\nO:%s   R:%s\n",labels[i],label)
-
-            fmt.Printf(" [")
-            for j := 0; j < len(Weights); j++ {
-                fmt.Printf(" %d ",int(Weights[j]*100))
-            }
-            fmt.Printf("]")
-        }
-    }
     
-    if !Test  {
-        Execute()
-    }
-}
-func ExecuteTest(b *testing.B) {
     Execute()
 }
 
 func Execute(){
+    ShowParams()
     var patterns [][]float64
     var labels []string
 
@@ -101,16 +73,13 @@ func LoadParams(){
 
     flag.BoolVar(&Saved,"s", false, "Save?")
     flag.BoolVar(&Train,"t", false, "Train?")
-    flag.StringVar(&Savename,"sname", "", "Save file name")
+    flag.StringVar(&Savename,"sname", "Train.json", "Save file name")
     flag.IntVar(&Loadtype,"type", 0, "0-Load file, 1-Load KddCup, 2-Json File")
     flag.StringVar(&Filename,"f", "", "File name")
-    flag.StringVar(&ValidFilename,"fv", Filename, "Valid File name")
-    flag.BoolVar(&Test,"test", false, "Test time")
 
     config:= flag.String("config", "", "Config file")
 
     flag.Parse()
-    
     
     // usando arquivo de configuracao
     if *config!="" {
@@ -151,9 +120,9 @@ func ShowParams() {
         fmt.Println("-Json:", Filename)
     }
 
-    fmt.Println("-Grid Size:", somf.Koh.Gridsize)
-    fmt.Println("-Interactions:", somf.Koh.Interactions)
-    fmt.Println("-Variation:", somf.Koh.TxVar)
+    fmt.Println("-Grid Size:", somf.Gridsize)
+    fmt.Println("-Interactions:", somf.Interactions)
+    fmt.Println("-Variation:", somf.TxVar)
     fmt.Println("-Save?:", Saved)
 
     if Saved{
