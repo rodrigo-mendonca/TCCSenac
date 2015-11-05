@@ -24,20 +24,16 @@ func TestExecute(t *testing.T) {
     Execute()
 
     for i := 0; i < len(patterns); i++ {
-        _,label := somf.Koh.Test(patterns[i])
+        Weights,label := somf.Koh.Test(patterns[i])
 
         if(labels[i] != label){
-            err := errors.New("Puts!Deu Erro!")
+            err := errors.New("Erro: Resposta errada!")
             t.Fatal(err)
         }
-        /*
-        fmt.Printf("\nO:%s   R:%s\n",labels[i],label)
 
-        fmt.Printf(" [")
-        for j := 0; j < len(Weights); j++ {
-            fmt.Printf(" %d ",int(Weights[j]*100))
+        if int(Weights[i]*100) < 99 {
+            err := errors.New("Porcentagem menor que 99%")
+            t.Fatal(err)
         }
-        fmt.Printf("]")
-        */
     }
 }
