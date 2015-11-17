@@ -14,8 +14,37 @@ import (
     "io/ioutil"
 )
 
+type KDDNormal struct{
+    Attack string
+    Duration float64
+    Protocol_type float64
+    Service float64
+    Flag float64
+    Src_bytes float64
+    Dst_bytes float64
+    Land float64
+    Wrong_fragment float64
+    Urgent float64
+    Hot float64
+    Num_failed_logins float64
+    Logged_in float64
+    Num_compromised float64
+    Root_shell float64
+    Su_attempted float64 
+    Num_root float64
+    Num_file_creations float64
+    Num_shells float64
+    Num_access_files float64
+    Is_host_login float64
+    Is_guest_login float64
+    Count float64
+    Srv_count float64
+    Dst_host_count float64
+    Dst_host_srv_count float64
+}
+
 var Koh somk.Kohonen
-var Server, Dbname string
+var Server, Dbname,Colname string
 var Gridsize,Dimensions int
 var Error float64
 var Interactions int
@@ -91,25 +120,31 @@ func LoadFile(f string) ([][]float64,[]string) {
     return patterns,labels
 }
 
-func LoadKDDCup(col string) ([][]float64,[]string){
+func LoadKDDCup() ([][]float64,[]string){
     //var patterns [][]float64
     var labels []string
 
-    Colletion := LoadColletion(col)
+    Colletion := LoadColletion(Colname)
     
+    var kdd []KDDNormal
     var patterns [][]float64
 
-    err := Colletion.Find(bson.M{}).All(&patterns)
+    err := Colletion.Find(bson.M{}).All(&kdd)
     Checkerro(err)
-    //numlines:=0
-    //for _,reg:= range patterns{
-        //labels = append(labels, string(reg[0]))
-        
-        //fmt.Printf(reg[0]+"\n")
+    numlines:=0
+    for _,reg:= range kdd{
 
-        //numlines++
-    //}
-
+        find:=false
+        for i := 0; i < len(labels); i++ {
+            find = labels[i] == reg.Attack
+        }
+        if !find{
+            labels = append(labels, reg.Attack)
+            fmt.Printf(reg.Attack+"\n")
+        }
+        numlines++
+    }
+    fmt.Printf("Total de Linhas: %i\n",numlines)
     return patterns,labels
 }
 
@@ -119,17 +154,6 @@ func SaveDB(col string){
 
     Colletion.Insert(Koh)
     fmt.Printf("Treinamento Salvo\n")
-    /*
-    ind:=0
-    for _, newline:= range Koh {
-        for _, newreg:= range newline {
-            err := Colletion.Insert(newreg)
-            Checkerro(err)
-
-            ind++
-        }
-    }
-    */
 }
 
 func LoadDB(col string) somk.Kohonen{

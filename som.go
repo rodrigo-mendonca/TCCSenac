@@ -30,7 +30,8 @@ func Execute(){
         patterns,labels =somf.LoadFile(Filename)
     }
     if Loadtype == 1 {
-        patterns,labels =somf.LoadKDDCup("KDDCup")
+        patterns,labels =somf.LoadKDDCup()
+        return
     }
     if Loadtype == 2 {
         somf.Koh = somf.LoadJson(Filename)
@@ -66,6 +67,7 @@ func Execute(){
 func LoadParams(){
     flag.StringVar(&somf.Server,"server", "localhost", "Server name")
     flag.StringVar(&somf.Dbname,"base", "TCC", "Data base name")
+    flag.StringVar(&somf.Colname,"colletion", "10KDDNormal", "Data base name")
     flag.IntVar(&somf.Gridsize,"grid", 10, "Grid Size")
     flag.IntVar(&somf.Dimensions,"dim", 3, "Dimensions Weigths")
     flag.IntVar(&somf.Interactions,"ite", 5000, "Iteractions")
