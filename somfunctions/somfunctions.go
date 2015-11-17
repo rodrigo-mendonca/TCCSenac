@@ -2,6 +2,7 @@ package somfunctions
 
 import (
 	somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
+    //somk "../kohonen"
 	"os"
     "os/exec"
     "gopkg.in/mgo.v2"
@@ -79,7 +80,7 @@ func LoadColletion(name string) *mgo.Collection{
     return session.DB(Dbname).C(name)
 }
 
-func LoadFile(f string) ([][]float64,[]string) {
+func LoadFile(f string) ([][]float64,[][]float64,[]string) {
     // faz a leitura do arquivo
     file,err := os.Open(f)
     Checkerro(err)
@@ -88,23 +89,33 @@ func LoadFile(f string) ([][]float64,[]string) {
     scanner := bufio.NewScanner(reader)
 
     var patterns [][]float64
+    var out [][]float64
     var labels []string
+    indexlabel:=0
 
     for scanner.Scan() {
         line:=scanner.Text()
 
         params:=strings.Split(line,",")
 
+
         // primeiro parametro deve ser a label do registro
         // verifica se a label ja existe
         find:=false
         for i := 0; i < len(labels); i++ {
             find = labels[i] == params[0]
+            if(find){
+                indexlabel = i
+                break
+            }
         }
         if !find{
             labels = append(labels, params[0])
+            indexlabel = len(labels)
         }
         inputs := make([]float64,Dimensions)
+        inputsout := make([]float64, 3)
+        inputsout[indexlabel] = 1
 
         for i := 1; i <= Dimensions; i++ {
             p:=params[i]
@@ -115,14 +126,17 @@ func LoadFile(f string) ([][]float64,[]string) {
             Checkerro(err)
         }
         patterns = append(patterns, inputs)
+
+        out = append(out, inputsout)
     }
 
-    return patterns,labels
+    return patterns,out,labels
 }
 
-func LoadKDDCup() ([][]float64,[]string){
+func LoadKDDCup() ([][]float64,[][]float64,[]string){
     //var patterns [][]float64
     var labels []string
+    var out [][]float64
 
     Colletion := LoadColletion(Colname)
     
@@ -132,20 +146,36 @@ func LoadKDDCup() ([][]float64,[]string){
     err := Colletion.Find(bson.M{}).All(&kdd)
     Checkerro(err)
     numlines:=0
+    indexlabel:=0
     for _,reg:= range kdd{
-
+        // verifica se o nome do ataque ja existe na lista de labels
         find:=false
         for i := 0; i < len(labels); i++ {
             find = labels[i] == reg.Attack
+            if(find){
+                indexlabel = i
+                break
+            }
         }
         if !find{
             labels = append(labels, reg.Attack)
-            fmt.Printf(reg.Attack+"\n")
+            indexlabel = len(labels) -1
         }
+
+        inputs := make([]float64,Dimensions)
+        inputsout := make([]float64, 6)
+        inputsout[indexlabel] = 1
+
+        inputs[0] = 1
+        inputs[1] = 2
+        //fmt.Printf("Inputs:%v\n",inputsout)
+        patterns = append(patterns, inputs)
+        out = append(out, inputsout)
         numlines++
     }
+    fmt.Printf("Labels: %v\n",labels)
     fmt.Printf("Total de Linhas: %i\n",numlines)
-    return patterns,labels
+    return patterns,out,labels
 }
 
 func SaveDB(col string){

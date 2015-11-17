@@ -40,12 +40,13 @@ func (r Kohonen) Create(l int, d int, i int, v float64) Kohonen{
     r.TxVar = v
 
     // seguindo o numero de registros diferentes, cria a grid de retorno sendo uma matriz identidade
+    /*
     r.Result = make([][]float64,len(r.Labels))
     for i := 0; i < len(r.Labels); i++ {
         r.Result[i] = make([]float64,len(r.Labels))
         r.Result[i][i] = 1
     }
-
+    */
     rand.Seed(time.Now().Unix())
     r = r.Initialise()
 
@@ -125,8 +126,6 @@ func (r Kohonen) NormalisePatterns() Kohonen{
 }
 
 func (r Kohonen) Train() Kohonen{
-    r = r.NormalisePatterns()
-
     for inter := 1; inter <= r.Interactions; inter++ {
         for i := 0; i < r.NumReg; i++ {
             r = r.TrainPattern(inter,r.Patterns[i],r.Result[i])

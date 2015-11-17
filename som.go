@@ -2,7 +2,8 @@ package main
 
 import (
     //"./somstructs"
-    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    //somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    somf "./somfunctions"
     "fmt"
     "flag"
     "os"
@@ -11,7 +12,7 @@ import (
 
 var Loadtype int
 var Filename, Savename string
-var Saved, Train bool
+var Saved, Train, Normalize bool
 var PngBefore,PngAfter string
 
 func main() {
@@ -23,15 +24,16 @@ func main() {
 func Execute(){
     ShowParams()
     var patterns [][]float64
+    var out [][]float64
     var labels []string
 
     // faz a leitura dos dados de treinamento
     if Loadtype == 0 {
-        patterns,labels =somf.LoadFile(Filename)
+        patterns,out,labels =somf.LoadFile(Filename)
     }
     if Loadtype == 1 {
-        patterns,labels =somf.LoadKDDCup()
-        return
+        patterns, out, labels =somf.LoadKDDCup()
+        Normalize = false
     }
     if Loadtype == 2 {
         somf.Koh = somf.LoadJson(Filename)
@@ -40,6 +42,10 @@ func Execute(){
         somf.Koh.NumReg   = len(patterns)
         somf.Koh.DimensionsOut = len(labels)
         somf.Koh.Labels   = labels
+        somf.Koh.Result = out
+
+        fmt.Printf("Patterns:%d\n",somf.Koh.NumReg)
+        fmt.Printf("DimOut:%d\n",somf.Koh.DimensionsOut)
 
         somf.Koh = somf.Koh.Create(somf.Gridsize,somf.Dimensions,somf.Interactions,somf.TxVar)
     }
@@ -50,6 +56,10 @@ func Execute(){
 
     // Desenha o estado atual da grade antes do treino
     somf.Koh.Draw(PngBefore)
+
+    if Normalize {
+        somf.Koh = somf.Koh.NormalisePatterns()
+    }
 
     if Train {
         // faz o treinamento da base de dados
@@ -75,6 +85,7 @@ func LoadParams(){
 
     flag.BoolVar(&Saved,"s", false, "Save?")
     flag.BoolVar(&Train,"t", false, "Train?")
+    flag.BoolVar(&Normalize,"n", true, "Normalize?")
     flag.StringVar(&Savename,"sname", "Train.json", "Save file name")
     flag.IntVar(&Loadtype,"type", 0, "0-Load file, 1-Load KddCup, 2-Json File")
     flag.StringVar(&Filename,"f", "", "File name")
@@ -115,7 +126,7 @@ func ShowParams() {
 
     if Loadtype == 1{
         fmt.Println("-Server:", somf.Server)
-        fmt.Println("-DataBase:", somf.Server)
+        fmt.Println("-DataBase:", somf.Dbname)
     }
 
     if Loadtype == 2{
@@ -126,6 +137,8 @@ func ShowParams() {
     fmt.Println("-Interactions:", somf.Interactions)
     fmt.Println("-Variation:", somf.TxVar)
     fmt.Println("-Save?:", Saved)
+    fmt.Println("-Train?:", Train)
+    fmt.Println("-Normalize?:", Normalize)
 
     if Saved{
         fmt.Println("  -File name:", Savename)
