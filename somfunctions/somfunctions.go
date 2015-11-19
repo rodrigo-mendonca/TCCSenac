@@ -98,7 +98,6 @@ func LoadFile(f string) ([][]float64,[][]float64,[]string) {
 
         params:=strings.Split(line,",")
 
-
         // primeiro parametro deve ser a label do registro
         // verifica se a label ja existe
         find:=false
@@ -111,10 +110,11 @@ func LoadFile(f string) ([][]float64,[][]float64,[]string) {
         }
         if !find{
             labels = append(labels, params[0])
-            indexlabel = len(labels)
+            indexlabel = len(labels) -1
         }
+
         inputs := make([]float64,Dimensions)
-        inputsout := make([]float64, 3)
+        inputsout := make([]float64, 25)
         inputsout[indexlabel] = 1
 
         for i := 1; i <= Dimensions; i++ {

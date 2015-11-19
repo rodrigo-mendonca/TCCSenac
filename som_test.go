@@ -4,7 +4,8 @@ import (
     "testing"
     "errors"
     //"fmt"
-    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    //somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    somf "./somfunctions"
 )
 
 func TestExecute(t *testing.T) {
@@ -13,14 +14,15 @@ func TestExecute(t *testing.T) {
     Filename = "Food.txt"
     ValidFilename := "Food.txt"
     Train = true
+    Normalize = true
 
     somf.Gridsize = 25
     somf.Dimensions = 3
     somf.Interactions = 5000
     somf.TxVar = 0.5
 
-    patterns,labels :=somf.LoadFile(ValidFilename)
-
+    patterns,_,labels :=somf.LoadFile(ValidFilename)
+    
     Execute()
 
     for i := 0; i < len(patterns); i++ {
