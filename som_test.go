@@ -4,8 +4,8 @@ import (
     "testing"
     "errors"
     //"fmt"
-    //somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
-    somf "./somfunctions"
+    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    //somf "./somfunctions"
 )
 
 func TestExecute(t *testing.T) {

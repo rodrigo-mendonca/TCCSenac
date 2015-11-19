@@ -154,7 +154,6 @@ func (r Kohonen) TrainPattern(inter int, pattern []float64,out []float64) (Kohon
 func (r Kohonen) Test(pattern []float64) ([]float64,string) {
     
     // normaliza a entrada
-    
     for i := 0; i < r.Dimensions; i++ {
         pattern[i] = pattern[i] / r.Normal[i]
     }
