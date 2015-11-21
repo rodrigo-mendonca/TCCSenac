@@ -2,8 +2,8 @@ package main
 
 import (
     //"./somstructs"
-    //somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
-    somf "./somfunctions"
+    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    //somf "./somfunctions"
     "fmt"
     "flag"
     "os"

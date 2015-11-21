@@ -1,8 +1,8 @@
 package somfunctions
 
 import (
-	//somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
-    somk "../kohonen"
+	somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
+    //somk "../kohonen"
 	"os"
     "os/exec"
     "gopkg.in/mgo.v2"
