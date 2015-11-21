@@ -2,8 +2,8 @@ package main
 
 import (
     //"./somstructs"
-    somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
-    //somf "./somfunctions"
+    //somf "github.com/rodrigo-mendonca/TCCSenac/somfunctions"
+    somf "./somfunctions"
     "fmt"
     "flag"
     "os"
@@ -43,9 +43,6 @@ func Execute(){
         somf.Koh.DimensionsOut = len(labels)
         somf.Koh.Labels   = labels
         somf.Koh.Result = out
-
-        fmt.Printf("Patterns:%d\n",somf.Koh.NumReg)
-        fmt.Printf("DimOut:%d\n",somf.Koh.DimensionsOut)
 
         somf.Koh = somf.Koh.Create(somf.Gridsize,somf.Dimensions,somf.Interactions,somf.TxVar)
     }

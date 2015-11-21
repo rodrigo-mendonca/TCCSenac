@@ -10,7 +10,7 @@ import (
     "image/draw"
     "image/png"
     "time"
-    //"fmt"
+    "fmt"
 )
 
 var (
@@ -128,6 +128,8 @@ func (r Kohonen) NormalisePatterns() Kohonen{
 
 func (r Kohonen) Train() Kohonen{
     for inter := 1; inter <= r.Interactions; inter++ {
+        fmt.Printf("Interation: %d\n",inter)
+
         for i := 0; i < r.NumReg; i++ {
             r = r.TrainPattern(inter,r.Patterns[i],r.Result[i])
         }

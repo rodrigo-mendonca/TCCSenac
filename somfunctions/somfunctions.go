@@ -1,8 +1,8 @@
 package somfunctions
 
 import (
-	somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
-    //somk "../kohonen"
+	//somk "github.com/rodrigo-mendonca/TCCSenac/kohonen"
+    somk "../kohonen"
 	"os"
     "os/exec"
     "gopkg.in/mgo.v2"
@@ -13,6 +13,7 @@ import (
     "bufio"
     "fmt"
     "io/ioutil"
+    "reflect"
 )
 
 type KDDNormal struct{
@@ -147,7 +148,8 @@ func LoadKDDCup() ([][]float64,[][]float64,[]string){
     Checkerro(err)
     numlines:=0
     indexlabel:=0
-    for _,reg:= range kdd{
+
+    for _, reg:= range kdd{
         // verifica se o nome do ataque ja existe na lista de labels
         find:=false
         for i := 0; i < len(labels); i++ {
@@ -165,15 +167,28 @@ func LoadKDDCup() ([][]float64,[][]float64,[]string){
         inputs := make([]float64,Dimensions)
         inputsout := make([]float64, 6)
         inputsout[indexlabel] = 1
+        
 
-        inputs[0] = 1
-        inputs[1] = 2
-        //fmt.Printf("Inputs:%v\n",inputsout)
+        val := reflect.ValueOf(reg)
+
+        // ignora o ataque
+        for i := 0; i < Dimensions; i++ {
+            typeField := val.Type().Field(i+1)
+
+            f := val.FieldByName(typeField.Name)        
+
+            if f.IsValid() {
+                if f.Kind() == reflect.Float64 {
+                    inputs[i] = f.Float()
+                }
+            }
+        }
+        //fmt.Printf("Inputs:%v\n",inputs)
         patterns = append(patterns, inputs)
         out = append(out, inputsout)
         numlines++
     }
-    fmt.Printf("Labels: %v\n",labels)
+    //fmt.Printf("Labels: %v\n",labels)
     fmt.Printf("Total de Linhas: %i\n",numlines)
     return patterns,out,labels
 }
